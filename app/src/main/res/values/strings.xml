@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WallpaperBase</string>
+    <string name="grant_permission">Grant Permission</string>
+</resources>
