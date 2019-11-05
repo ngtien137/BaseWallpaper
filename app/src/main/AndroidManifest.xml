@@ -4,6 +4,7 @@
     package="com.base.wallpaperbase">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -22,6 +23,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="com.base.wallpaperbase.service.VideoLiveWallpaper"
+            android:label="MultiLWP(Video)"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:showOnLockScreen="true">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/mywallpaper" />
+        </service>
+        <service
+            android:name=".service.GIFLiveWallpaper"
+            android:label="MultiLWP(GIF)"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:showOnLockScreen="true">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/mywallpaper" />
+        </service>
     </application>
 
 </manifest>

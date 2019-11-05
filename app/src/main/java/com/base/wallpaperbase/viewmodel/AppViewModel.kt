@@ -6,11 +6,6 @@ import com.base.wallpaperbase.model.image.Image
 import com.base.wallpaperbase.model.video.Video
 
 class AppViewModel:ViewModel(){
-    companion object{
-        private val viewModelFactory = ViewModelFactory()
-        fun getInstance() = viewModelFactory.create(AppViewModel::class.java)
-    }
-
-    val listImage = MutableLiveData<List<Image>>()
-    val listVideo = MutableLiveData<List<Video>>()
+    val listImage = MutableLiveData<ArrayList<Image>>()
+    val listVideo = MutableLiveData<ArrayList<Video>>()
 }

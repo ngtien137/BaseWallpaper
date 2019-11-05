@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="media"
-            type="com.base.wallpaperbase.model.Media" />
+            name="video"
+            type="com.base.wallpaperbase.model.video.Video" />
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,11 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
+            android:layout_margin="4dp"
+            android:background="@color/bg_main"
             app:cardCornerRadius="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
-                img_path="@{media.path}"
+                img_path="@{video.path}"
                 tools:src="@mipmap/ic_launcher"
                 android:id="@+id/imgService"
                 android:layout_width="match_parent"
