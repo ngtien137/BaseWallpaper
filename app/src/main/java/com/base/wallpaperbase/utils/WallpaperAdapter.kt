@@ -76,7 +76,6 @@ object WallpaperAdapter {
 
             try {
                 wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
-                Toast.makeText(App.app, "Error", Toast.LENGTH_SHORT).show();
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e(TAG,"Error: $e")
@@ -114,7 +113,6 @@ object WallpaperAdapter {
 
             try {
                 wallpaperManager.setBitmap(tempBmp)
-                Toast.makeText(App.app, "Error", Toast.LENGTH_SHORT).show();
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e(TAG,"Error: $e")
@@ -145,7 +143,6 @@ object WallpaperAdapter {
             wallpaperManager.setWallpaperOffsetSteps(1f, 1f)
             try {
                 wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM)
-                Toast.makeText(App.app, "Error", Toast.LENGTH_SHORT).show();
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e(TAG,"Error: $e")
