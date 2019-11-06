@@ -12,6 +12,9 @@
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="isLoading"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
@@ -81,6 +84,7 @@
             tools:ignore="UnusedAttribute" />
 
         <include
+            android:visibility="@{isLoading?View.VISIBLE:View.GONE}"
             layout="@layout/layout_loading" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>

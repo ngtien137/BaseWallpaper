@@ -83,4 +83,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
         }
     }
 
+    fun showLoading(isShown:Boolean = true){
+        binding.isLoading = isShown
+    }
+
 }

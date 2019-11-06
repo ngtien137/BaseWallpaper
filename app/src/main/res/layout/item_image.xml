@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="image"
+            name="item"
             type="com.base.wallpaperbase.model.image.Image" />
+        <variable
+            name="listener"
+            type="com.base.wallpaperbase.model.image.ImageListener" />
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
+            android:onClick="@{v->listener.onMediaClick(item)}"
             android:layout_margin="4dp"
             android:background="@color/bg_main"
             app:cardCornerRadius="4dp"
@@ -23,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    img_path="@{image.path}"
+                    img_path="@{item.path}"
                     tools:src="@mipmap/ic_launcher"
                     android:id="@+id/imgService"
                     android:layout_width="match_parent"
@@ -32,6 +36,7 @@
                 <TextView
                     android:layout_centerInParent="true"
                     tools:text="Name"
+                    img_path="@{item.path}"
                     android:textColor="@color/red"
                     android:id="@+id/tvType"
                     android:layout_width="wrap_content"
