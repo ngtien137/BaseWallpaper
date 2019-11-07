@@ -30,8 +30,16 @@ object WallpaperAdapter {
         GIFLiveWallpaper.setToWallPaper(context,path)
     }
 
+    fun setWallpaperByGif(context:Context, resGif:Int){
+        GIFLiveWallpaper.setToWallPaper(context,resGif)
+    }
+
     fun setWallpaperByVideo(context:Context, path:String){
         VideoLiveWallpaper.setToWallPaper(context,path)
+    }
+
+    fun setWallpaperByVideo(context:Context, resVideo:Int){
+        VideoLiveWallpaper.setToWallPaper(context,resVideo)
     }
 
     fun setWallpaper(key:Key,path:String,onStart:()->Unit={},onEnd:()->Unit={}){
@@ -106,7 +114,7 @@ object WallpaperAdapter {
 
         override fun doInBackground(vararg params: String): String {
             // get size
-            var tempBmp = bitmap
+            val tempBmp = bitmap
             val wallpaperManager = WallpaperManager.getInstance(App.app)
 
             wallpaperManager.setWallpaperOffsetSteps(1f, 1f)
@@ -122,12 +130,12 @@ object WallpaperAdapter {
         }
 
         override fun onPostExecute(result: String) {
-            Toast.makeText(App.app, "Set both", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.app, "Set both", Toast.LENGTH_SHORT).show()
             onEnd()
         }
 
         override fun onPreExecute() {
-            Toast.makeText(App.app, "Is setting both", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.app, "Is setting both", Toast.LENGTH_SHORT).show()
             onStart()
         }
 

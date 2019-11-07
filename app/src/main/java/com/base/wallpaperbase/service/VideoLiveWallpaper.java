@@ -1,8 +1,6 @@
 package com.base.wallpaperbase.service;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
@@ -10,11 +8,13 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.base.wallpaperbase.views.VideoFragment;
+import com.base.wallpaperbase.R;
+
 
 public class VideoLiveWallpaper extends WallpaperService {
 
     public static String videoPath = "";
+    public static int videoResource = -1;
     //###################### Setting ######################
     public static final String TAG = "NVTVideoLiveWallpaper";
     public String LOCAL_VIDEO_PATH = "";
@@ -28,6 +28,12 @@ public class VideoLiveWallpaper extends WallpaperService {
 
     public static void setToWallPaper(Context context,String videoPath) {
         VideoLiveWallpaper.videoPath = videoPath;
+        WallpaperUtil.setToWallPaper(context,
+                context.getPackageName()+".service.VideoLiveWallpaper",true);
+    }
+
+    public static void setToWallPaper(Context context,int videoResource) {
+        VideoLiveWallpaper.videoResource = videoResource;
         WallpaperUtil.setToWallPaper(context,
                 context.getPackageName()+".service.VideoLiveWallpaper",true);
     }
@@ -58,7 +64,6 @@ public class VideoLiveWallpaper extends WallpaperService {
 
         @Override
         public void onVisibilityChanged(boolean visible) {
-            //否则进入 Home 还 Play
             if (visible) {
                 mMediaPlayer.start();
             } else {
@@ -70,10 +75,18 @@ public class VideoLiveWallpaper extends WallpaperService {
         public void onSurfaceCreated(SurfaceHolder holder) {
             super.onSurfaceCreated(holder);
             mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setSurface(holder.getSurface());
             try {
-                mMediaPlayer.setDataSource(videoPath);
-                //循环
+                if (!videoPath.isEmpty()) {
+                    Log.e(TAG,"Init with path: "+videoPath);
+                    mMediaPlayer.setDataSource(videoPath);
+                }else if (videoResource!=-1) {
+                    Log.e(TAG,"Init with media resource: "+videoResource);
+                    mMediaPlayer = MediaPlayer.create(VideoLiveWallpaper.this, videoResource);
+                }else{
+                    Log.e(TAG,"Not init");
+                    throw new Exception();
+                }
+                mMediaPlayer.setSurface(holder.getSurface());
                 mMediaPlayer.setLooping(true);
                 mMediaPlayer.setVolume(0, 0);
                 mMediaPlayer.prepare();
@@ -84,9 +97,6 @@ public class VideoLiveWallpaper extends WallpaperService {
                 e.printStackTrace();
             }
 
-            /**
-             * 播放器异常事件
-             */
             mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 
                 @Override
@@ -98,9 +108,6 @@ public class VideoLiveWallpaper extends WallpaperService {
             });
 
 
-            /**
-             * 播放器準備事件
-             */
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
                 @Override

@@ -17,15 +17,24 @@ import java.io.InputStream;
 public class GIFLiveWallpaper extends WallpaperService {
 
     public static String gifPath = "";
+    public static int gifResource = -1;
 
     //###################### Setting ######################
     public String LOCAL_GIF_PATH = "";
     public String LOCAL_GIF_NAME = "";
     private static String LOCAL_GIF = "testgif.gif";
+    private static final String TAG = "LOGGIFLiveWallpaper";
 
 
     public static void setToWallPaper(Context context,String gifPath) {
         GIFLiveWallpaper.gifPath = gifPath;
+        WallpaperUtil.setToWallPaper(context,
+                context.getPackageName()+".service.GIFLiveWallpaper",true);
+
+    }
+
+    public static void setToWallPaper(Context context,int gifResource) {
+        GIFLiveWallpaper.gifResource = gifResource;
         WallpaperUtil.setToWallPaper(context,
                 context.getPackageName()+".service.GIFLiveWallpaper",true);
 
@@ -85,21 +94,19 @@ public class GIFLiveWallpaper extends WallpaperService {
 
             try {
                 Log.d("GIF", "imageFile exist ");
+                InputStream mInputStream = null;
 
-                File imageFile =  new File(gifPath);
+                File imageFile = new File(gifPath);
                 final int readLimit = 16 * 1024;
-                if(imageFile != null){
-                    InputStream mInputStream =  new BufferedInputStream(new FileInputStream(imageFile), readLimit);
-                    mInputStream.mark(readLimit);
-                    Movie video = Movie.decodeStream(mInputStream);
-                    movie = video;
-                } else {
-                    Movie video = Movie.decodeStream(
-                            getResources().getAssets().open(LOCAL_GIF));
-                    movie = video;
+                if (!gifPath.isEmpty()){
+                    mInputStream  =  new BufferedInputStream(new FileInputStream(imageFile), readLimit);
+                }else{
+                    mInputStream = getResources().openRawResource(gifResource);
                 }
+                mInputStream.mark(readLimit);
+                movie = Movie.decodeStream(mInputStream);
             }catch(IOException e){
-
+                Log.e(TAG,"Error: "+e.toString());
 
                 try {
                     Movie video = null;
