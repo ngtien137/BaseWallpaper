@@ -25,20 +25,20 @@ object WallpaperAdapter {
         SET_AS_LOCK, SET_AS_HOME, SET_BOTH
     }
 
-    fun setWallpaperByGif(context: Context, path: String) {
-        GIFLiveWallpaper.setToWallPaper(context, path)
+    fun setWallpaperByGif(context: Context, path: String,requestResult:Int=-1) {
+        GIFLiveWallpaper.setToWallPaper(context, path,requestResult)
     }
 
-    fun setWallpaperByGif(context: Context, resGif: Int) {
-        GIFLiveWallpaper.setToWallPaper(context, resGif)
+    fun setWallpaperByGif(context: Context, resGif: Int,requestResult:Int=-1) {
+        GIFLiveWallpaper.setToWallPaper(context, resGif,requestResult)
     }
 
-    fun setWallpaperByVideo(context: Context, path: String) {
-        VideoLiveWallpaper.setToWallPaper(context, path)
+    fun setWallpaperByVideo(context: Context, path: String,requestResult:Int=-1) {
+        VideoLiveWallpaper.setToWallPaper(context, path,requestResult)
     }
 
-    fun setWallpaperByVideo(context: Context, resVideo: Int) {
-        VideoLiveWallpaper.setToWallPaper(context, resVideo)
+    fun setWallpaperByVideo(context: Context, resVideo: Int,requestResult:Int=-1) {
+        VideoLiveWallpaper.setToWallPaper(context, resVideo,requestResult)
     }
 
     fun setWallpaper(

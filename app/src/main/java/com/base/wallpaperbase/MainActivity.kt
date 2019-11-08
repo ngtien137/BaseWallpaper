@@ -1,9 +1,11 @@
 package com.base.wallpaperbase
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
@@ -20,6 +22,10 @@ import com.base.wallpaperbase.views.VideoFragment
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
+
+    companion object{
+        const val REQUEST_SETLIVE = 100
+    }
 
     private lateinit var viewModel:AppViewModel
     private lateinit var mediaDao:MediaDao
@@ -111,5 +117,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
         if (binding.isLoading==true)
             return
         super.onBackPressed()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            REQUEST_SETLIVE->{
+                when(resultCode){
+                    0->{
+                        Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show()
+                    }
+                    -1->{
+                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 }

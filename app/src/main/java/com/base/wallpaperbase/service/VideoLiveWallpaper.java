@@ -26,16 +26,16 @@ public class VideoLiveWallpaper extends WallpaperService {
     }
 
 
-    public static void setToWallPaper(Context context,String videoPath) {
+    public static void setToWallPaper(Context context,String videoPath,int requestResult) {
         VideoLiveWallpaper.videoPath = videoPath;
         WallpaperUtil.setToWallPaper(context,
-                context.getPackageName()+".service.VideoLiveWallpaper",true);
+                VideoLiveWallpaper.class.getName(),requestResult);
     }
 
-    public static void setToWallPaper(Context context,int videoResource) {
+    public static void setToWallPaper(Context context,int videoResource, int requestResult) {
         VideoLiveWallpaper.videoResource = videoResource;
         WallpaperUtil.setToWallPaper(context,
-                context.getPackageName()+".service.VideoLiveWallpaper",true);
+                VideoLiveWallpaper.class.getName(),requestResult);
     }
 
     class VideoWallpaperEngine extends WallpaperService.Engine {
@@ -77,13 +77,10 @@ public class VideoLiveWallpaper extends WallpaperService {
             mMediaPlayer = new MediaPlayer();
             try {
                 if (!videoPath.isEmpty()) {
-                    Log.e(TAG,"Init with path: "+videoPath);
                     mMediaPlayer.setDataSource(videoPath);
                 }else if (videoResource!=-1) {
-                    Log.e(TAG,"Init with media resource: "+videoResource);
                     mMediaPlayer = MediaPlayer.create(VideoLiveWallpaper.this, videoResource);
                 }else{
-                    Log.e(TAG,"Not init");
                     throw new Exception();
                 }
                 mMediaPlayer.setSurface(holder.getSurface());

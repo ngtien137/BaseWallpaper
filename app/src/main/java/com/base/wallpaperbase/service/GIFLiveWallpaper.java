@@ -26,17 +26,17 @@ public class GIFLiveWallpaper extends WallpaperService {
     private static final String TAG = "LOGGIFLiveWallpaper";
 
 
-    public static void setToWallPaper(Context context,String gifPath) {
+    public static void setToWallPaper(Context context,String gifPath,int requestResult) {
         GIFLiveWallpaper.gifPath = gifPath;
         WallpaperUtil.setToWallPaper(context,
-                context.getPackageName()+".service.GIFLiveWallpaper",true);
+                GIFLiveWallpaper.class.getName(),1);
 
     }
 
-    public static void setToWallPaper(Context context,int gifResource) {
+    public static void setToWallPaper(Context context,int gifResource,int requestResult) {
         GIFLiveWallpaper.gifResource = gifResource;
         WallpaperUtil.setToWallPaper(context,
-                context.getPackageName()+".service.GIFLiveWallpaper",true);
+                GIFLiveWallpaper.class.getName(),requestResult);
 
     }
 

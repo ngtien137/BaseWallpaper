@@ -45,6 +45,6 @@ class VideoFragment : BaseTitleFragment<FragmentVideoBinding>(),
 
     override fun onMediaClick(video: Video) {
         Toast.makeText(activity, "Set ${video.displayName} to wallpaper", Toast.LENGTH_SHORT).show()
-        WallpaperAdapter.setWallpaperByVideo(activity,video.path)
+        WallpaperAdapter.setWallpaperByVideo(activity,video.path,MainActivity.REQUEST_SETLIVE)
     }
 }

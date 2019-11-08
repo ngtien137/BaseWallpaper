@@ -17,6 +17,7 @@ import com.base.wallpaperbase.utils.WallpaperAdapter
 import com.base.wallpaperbase.viewmodel.AppViewModel
 import kotlinx.android.synthetic.main.fragment_image.*
 import java.io.File
+import java.util.*
 
 class ImageFragment : BaseTitleFragment<FragmentImageBinding>(),
     ImageListener {
@@ -50,9 +51,9 @@ class ImageFragment : BaseTitleFragment<FragmentImageBinding>(),
         val file = File(image.path)
         if (!file.exists())
             return
-        if (file.extension.toLowerCase()=="gif"){
+        if (file.extension.toLowerCase(Locale.getDefault())=="gif"){
             Toast.makeText(activity, "Gif image", Toast.LENGTH_SHORT).show()
-            WallpaperAdapter.setWallpaperByGif(activity,image.path)
+            WallpaperAdapter.setWallpaperByGif(activity,image.path,MainActivity.REQUEST_SETLIVE)
         }else{
             Toast.makeText(activity, "Normal image", Toast.LENGTH_SHORT).show()
             val dialog = WallpaperDialog(activity)
