@@ -17,3 +17,9 @@ fun loadImage(view: View, img_path:String?){
         view.text = File(img_path).extension
     }
 }
+
+@BindingAdapter("object_resource")
+fun ImageView.loadResource(id:Int){
+    val size = context.resources.displayMetrics.widthPixels / 3
+    Glide.with(context).load(id).override(size).into(this)
+}

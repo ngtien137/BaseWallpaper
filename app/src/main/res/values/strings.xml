@@ -6,4 +6,5 @@
     <string name="set_lock">Set Lock</string>
     <string name="set_both">Set both</string>
     <string name="set_home">Set home</string>
+    <string name="resource">Resource</string>
 </resources>

@@ -4,28 +4,27 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import com.base.baselibrary.activity.BaseActivity
 import com.base.baselibrary.dao.MediaDao
-import com.base.baselibrary.fragment.BaseFragment
-import com.base.baselibrary.fragment.BaseTitleFragment
 import com.base.wallpaperbase.databinding.ActivityMainBinding
 import com.base.wallpaperbase.model.image.Image
+import com.base.wallpaperbase.model.resource.ObjectResource
 import com.base.wallpaperbase.model.video.Video
 import com.base.wallpaperbase.viewmodel.AppViewModel
 import com.base.wallpaperbase.views.ImageFragment
+import com.base.wallpaperbase.views.ObjectResourceFragment
 import com.base.wallpaperbase.views.VideoFragment
+
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
 
     private lateinit var viewModel:AppViewModel
     private lateinit var mediaDao:MediaDao
     private val TAG = "NVT"+javaClass.simpleName
-    private var listFragment = arrayListOf<Fragment>(ImageFragment(),VideoFragment())
+    private var listFragment = arrayListOf<Fragment>(ImageFragment(),VideoFragment(),ObjectResourceFragment())
 
     private val listPermission = arrayOf(
         android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -39,6 +38,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
         mediaDao = MediaDao(this)
         viewModel = ViewModelProviders.of(this)[AppViewModel::class.java]
         binding.clickListener = this
+        binding.isLoading = false
         binding.isGrantPermission = checkPermission(listPermission)
         if (binding.isGrantPermission==true){
             loadData()
@@ -62,6 +62,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
             R.id.btnVideo->{
                 replaceScreen(1)
             }
+            R.id.btnResource->{
+                replaceScreen(2)
+            }
         }
     }
 
@@ -81,10 +84,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
         viewModel.listVideo.value = ArrayList<Video>().apply {
             addAll(mediaDao.getMedia(Video::class.java))
         }
+        val fields = R.raw::class.java.fields
+        viewModel.listResource.value = ArrayList<ObjectResource>().apply {
+            for (item in fields){
+                add(ObjectResource(item.getInt(item)))
+            }
+            add(ObjectResource(R.drawable.image1))
+            add(ObjectResource(R.drawable.image2))
+            add(ObjectResource(R.drawable.image3))
+            add(ObjectResource(R.drawable.image4))
+            add(ObjectResource(R.drawable.image5))
+            add(ObjectResource(R.drawable.image6))
+            add(ObjectResource(R.drawable.image7))
+            add(ObjectResource(R.drawable.image8))
+            add(ObjectResource(R.drawable.image9))
+            add(ObjectResource(R.drawable.image10))
+        }
     }
 
     fun showLoading(isShown:Boolean = true){
+        Log.e(TAG,"ShowLoading: $isShown")
         binding.isLoading = isShown
     }
 
+    override fun onBackPressed() {
+        if (binding.isLoading==true)
+            return
+        super.onBackPressed()
+    }
 }

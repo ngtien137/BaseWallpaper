@@ -52,8 +52,7 @@ class ImageFragment : BaseTitleFragment<FragmentImageBinding>(),
             return
         if (file.extension.toLowerCase()=="gif"){
             Toast.makeText(activity, "Gif image", Toast.LENGTH_SHORT).show()
-//            WallpaperAdapter.setWallpaperByGif(activity,image.path)
-            WallpaperAdapter.setWallpaperByGif(activity,R.raw.testgif)
+            WallpaperAdapter.setWallpaperByGif(activity,image.path)
         }else{
             Toast.makeText(activity, "Normal image", Toast.LENGTH_SHORT).show()
             val dialog = WallpaperDialog(activity)

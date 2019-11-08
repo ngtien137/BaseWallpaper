@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="item"
+            type="com.base.wallpaperbase.model.resource.ObjectResource" />
+        <variable
+            name="listener"
+            type="com.base.wallpaperbase.model.resource.ResourceListener" />
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:onClick="@{v->listener.onResourceClick(item)}"
+            android:layout_margin="4dp"
+            android:background="@color/bg_main"
+            app:cardCornerRadius="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    object_resource="@{item.id}"
+                    tools:src="@mipmap/ic_launcher"
+                    android:id="@+id/imgService"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:layout_centerInParent="true"
+                    tools:text="Name"
+                    android:text="@{item.getName()}"
+                    android:textColor="@color/red"
+                    android:id="@+id/tvType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</layout>

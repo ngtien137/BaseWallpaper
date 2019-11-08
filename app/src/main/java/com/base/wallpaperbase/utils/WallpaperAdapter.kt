@@ -8,59 +8,96 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Build
-import android.os.Environment
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.base.wallpaperbase.R
 import com.base.wallpaperbase.service.GIFLiveWallpaper
 import com.base.wallpaperbase.service.VideoLiveWallpaper
-import java.io.File
-import java.util.*
+import java.io.*
+
 
 object WallpaperAdapter {
 
     private val TAG = "WPPLOG"
 
-    enum class Key{
+    enum class Key {
         SET_AS_LOCK, SET_AS_HOME, SET_BOTH
     }
 
-    fun setWallpaperByGif(context:Context, path:String){
-        GIFLiveWallpaper.setToWallPaper(context,path)
+    fun setWallpaperByGif(context: Context, path: String) {
+        GIFLiveWallpaper.setToWallPaper(context, path)
     }
 
-    fun setWallpaperByGif(context:Context, resGif:Int){
-        GIFLiveWallpaper.setToWallPaper(context,resGif)
+    fun setWallpaperByGif(context: Context, resGif: Int) {
+        GIFLiveWallpaper.setToWallPaper(context, resGif)
     }
 
-    fun setWallpaperByVideo(context:Context, path:String){
-        VideoLiveWallpaper.setToWallPaper(context,path)
+    fun setWallpaperByVideo(context: Context, path: String) {
+        VideoLiveWallpaper.setToWallPaper(context, path)
     }
 
-    fun setWallpaperByVideo(context:Context, resVideo:Int){
-        VideoLiveWallpaper.setToWallPaper(context,resVideo)
+    fun setWallpaperByVideo(context: Context, resVideo: Int) {
+        VideoLiveWallpaper.setToWallPaper(context, resVideo)
     }
 
-    fun setWallpaper(key:Key,path:String,onStart:()->Unit={},onEnd:()->Unit={}){
-        val image = File(path)
+    fun setWallpaper(
+        key: Key,
+        path: String,
+        onStart: () -> Unit = {},
+        onEnd: () -> Unit = {},
+        setByResourceId: Int = -1
+    ) {
+        val image: File? = File(path)
         val bmOptions = BitmapFactory.Options()
-        val bitmap = BitmapFactory.decodeFile(image.absolutePath, bmOptions)
-        when(key){
-            Key.SET_AS_LOCK->{
-                SetLockScreen(bitmap,onStart,onEnd).execute("")
+        if(image!=null) {
+            val bitmap = if (!path.isEmpty()) BitmapFactory.decodeFile(image.absolutePath, bmOptions)
+            else BitmapFactory.decodeResource(App.app.resources, setByResourceId)
+            when (key) {
+                Key.SET_AS_LOCK -> {
+                    SetLockScreen(bitmap, onStart, onEnd).execute("")
+                }
+                Key.SET_AS_HOME -> {
+                    SetHomeScreen(bitmap, onStart, onEnd).execute("")
+                }
+                Key.SET_BOTH -> {
+                    SetLockAndHomeScreen(bitmap, onStart, onEnd).execute("")
+                }
             }
-            Key.SET_AS_HOME->{
-                SetHomeScreen(bitmap,onStart,onEnd).execute("")
-            }
-            Key.SET_BOTH->{
-                SetLockAndHomeScreen(bitmap,onStart,onEnd).execute("")
-            }
+        }else{
+            Log.e(TAG,"ERROR!")
+        }
+    }
+
+    private fun getFileFromResource(id: Int): File? {
+        try {
+            val inputStream = App.app.resources.openRawResource(id)
+            val tempFile = File.createTempFile("pre", "suf")
+            copyFile(inputStream,FileOutputStream(tempFile))
+            return tempFile
+        }catch (e:IOException){
+            return null
+        }finally {
+            Log.e("HVV1312","ok")
+        }
+    }
+
+    private fun copyFile(ips: InputStream, out: OutputStream) {
+        val buffer = byteArrayOf()
+        var read: Int
+        read = ips.read(buffer)
+        while (read != -1) {
+            out.write(buffer, 0, read)
+            read = ips.read(buffer)
         }
     }
 
 
-    private class SetLockScreen(var bitmap: Bitmap,var onStart:()->Unit={},var onEnd:()->Unit={}) : AsyncTask<String, Bitmap, String>() {
+    private class SetLockScreen(
+        var bitmap: Bitmap,
+        var onStart: () -> Unit = {},
+        var onEnd: () -> Unit = {}
+    ) : AsyncTask<String, Bitmap, String>() {
         @RequiresApi(api = Build.VERSION_CODES.N)
         override fun doInBackground(vararg params: String): String {
 
@@ -86,7 +123,7 @@ object WallpaperAdapter {
                 wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e(TAG,"Error: $e")
+                Log.e(TAG, "Error: $e")
             }
 
             return "Executed"
@@ -108,7 +145,11 @@ object WallpaperAdapter {
         }
     }
 
-    private class SetLockAndHomeScreen(var bitmap: Bitmap,var onStart:()->Unit={},var onEnd:()->Unit={}) : AsyncTask<String, Bitmap, String>() {
+    private class SetLockAndHomeScreen(
+        var bitmap: Bitmap,
+        var onStart: () -> Unit = {},
+        var onEnd: () -> Unit = {}
+    ) : AsyncTask<String, Bitmap, String>() {
         internal var progress = 0
         private val pd: ProgressDialog? = null
 
@@ -123,7 +164,7 @@ object WallpaperAdapter {
                 wallpaperManager.setBitmap(tempBmp)
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e(TAG,"Error: $e")
+                Log.e(TAG, "Error: $e")
             }
 
             return "Executed"
@@ -142,7 +183,11 @@ object WallpaperAdapter {
         override fun onProgressUpdate(vararg values: Bitmap) {}
     }
 
-    private class SetHomeScreen(var bitmap:Bitmap,var onStart:()->Unit={},var onEnd:()->Unit={}) : AsyncTask<String, Bitmap, String>() {
+    private class SetHomeScreen(
+        var bitmap: Bitmap,
+        var onStart: () -> Unit = {},
+        var onEnd: () -> Unit = {}
+    ) : AsyncTask<String, Bitmap, String>() {
 
         @TargetApi(Build.VERSION_CODES.N)
         override fun doInBackground(vararg params: String): String {
@@ -153,7 +198,7 @@ object WallpaperAdapter {
                 wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM)
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e(TAG,"Error: $e")
+                Log.e(TAG, "Error: $e")
             }
 
             return "Executed"
@@ -168,6 +213,7 @@ object WallpaperAdapter {
             Toast.makeText(App.app, "Is setting as home", Toast.LENGTH_SHORT).show();
             onStart()
         }
+
         override fun onProgressUpdate(vararg values: Bitmap) {}
     }
 }
